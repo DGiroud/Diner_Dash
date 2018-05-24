@@ -21,17 +21,16 @@ public class Table : MonoBehaviour
 
 
 
-    private int cC;                                 // the amount of CHILDREN in the UNSEATED group
+    public int cC;                                 // the amount of CHILDREN in the UNSEATED group
     public int sC;                                  // the amount of CUSTOMERS in the SEATED group
 
     private void Update()
     {
-
         if (seated)                                 //Checks whether the table has a group on it
         {
             float multiplier = 1 / (float)sC;
             seatedTimer += Time.deltaTime * multiplier;
-            Debug.Log(multiplier);
+            //Debug.Log(multiplier);
         }
         if (seatedTimer >= timer5)                  //First timer
         {
@@ -62,11 +61,12 @@ public class Table : MonoBehaviour
 
         if (other.tag == "Group")
         {
+            cC = other.gameObject.transform.childCount;
+
             if (other.GetComponent<Group>().targetTable != GetComponent<BoxCollider>())
             {
                 return;
-            }
-            cC = other.gameObject.transform.childCount;
+            }          
 
             if (tableNodes.Count < other.GetComponent<Group>().customerList.Count)
             {
@@ -75,39 +75,22 @@ public class Table : MonoBehaviour
             }
             if (tableNodes.Count >= other.GetComponent<Group>().customerList.Count)
             {
+                
 
                 if (seated == false)
                 {
-
-                    if (cC >= 13)
+                    for (int i = 0; i <= cC - 8; i++)
                     {
-                        other.gameObject.transform.GetChild(12).SetParent(transform);                        
-                    }
-                    if (cC >= 12)
-                    {
-                        other.gameObject.transform.GetChild(11).SetParent(transform);                       
-                    }
-                    if (cC >= 11)
-                    {
-                        other.gameObject.transform.GetChild(10).SetParent(transform);                        
-                    }
-                    if (cC >= 10)
-                    {
-                        other.gameObject.transform.GetChild(9).SetParent(transform);                        
-                    }
-                    if (cC >= 9)
-                    {
-                        other.gameObject.transform.GetChild(8).SetParent(transform);
                         other.gameObject.transform.GetChild(7).SetParent(transform);
-                        
-                    }
+                        //Debug.Log("Child");
+                    }                  
                     seated = true;
                     Seating();
                     if (Camera.main.GetComponent<GameController>().selectedGroup == other.gameObject)
                     {
                         Camera.main.GetComponent<GameController>().selectedGroup = Camera.main.GetComponent<GameController>().emptyObject;
                     }
-                    Destroy(other.gameObject);                    
+                    Destroy(other.gameObject);
                 }
             }
 
@@ -123,45 +106,24 @@ public class Table : MonoBehaviour
             if (child.tag == "Customer")                                        // Populating the Customer List
             {
                 seatedCustomers.Add(child.gameObject);
-
+                //Debug.Log("Added");
             }
+            
         }
-        if (seatedCustomers.Count >= 1)                                                        //Putting the customer in the right location
+        sC = seatedCustomers.Count;
+        for (int i = 1; i <= sC; i++)
         {
-            seatedCustomers[0].transform.position = tableNodes[0].transform.position;
-            sC = 1;
-        }
-        if (seatedCustomers.Count >= 2)                                                        //Putting the customer in the right location
-        {
-            seatedCustomers[1].transform.position = tableNodes[1].transform.position;
-            sC = 2;
-        }
-        if (seatedCustomers.Count >= 3)                                                        //Putting the customer in the right location
-        {
-            seatedCustomers[2].transform.position = tableNodes[2].transform.position;
-            sC = 3;
-        }
-        if (seatedCustomers.Count >= 4)                                                        //Putting the customer in the right location
-        {
-            seatedCustomers[3].transform.position = tableNodes[3].transform.position;
-            sC = 4;
-        }
-        if (seatedCustomers.Count >= 5)                                                        //Putting the customer in the right location
-        {
-            seatedCustomers[4].transform.position = tableNodes[4].transform.position;
-            sC = 5;
-        }
-        if (seatedCustomers.Count >= 6)                                                        //Putting the customer in the right location
-        {
-            seatedCustomers[5].transform.position = tableNodes[5].transform.position;
-            sC = 6;
-        }
+            seatedCustomers[i - 1].transform.position = tableNodes[i - 1].transform.position;
+        }  
+
         Seated();
+        
     }
 
     private void Seated()
-    {
-        score = (sC * 10);
+    {          
+
+        score = (sC * 10);       
 
         if (seated == false)
         {
@@ -187,13 +149,13 @@ public class Table : MonoBehaviour
         }
         if (seatedTimer >= timer1)
         {
-            gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(false);
-            gameObject.transform.GetChild(0).gameObject.SetActive(false);
-            gameObject.transform.GetChild(0).transform.GetChild(0).gameObject.SetActive(true);
-            gameObject.transform.GetChild(0).transform.GetChild(1).gameObject.SetActive(true);
-            gameObject.transform.GetChild(0).transform.GetChild(2).gameObject.SetActive(true);
-            gameObject.transform.GetChild(0).transform.GetChild(3).gameObject.SetActive(true);
-            gameObject.transform.GetChild(0).transform.GetChild(4).gameObject.SetActive(true);
+            timer.gameObject.SetActive(false);
+            for (int i = 1; i < transform.GetChildCount(); i++)
+            {
+                timer.transform.GetChild(i).gameObject.SetActive(true);
+            }
+            
+            
             seated = false;
             Camera.main.GetComponent<GameController>().scoreAmount += score;
             foreach (Transform child in transform)
@@ -203,13 +165,17 @@ public class Table : MonoBehaviour
                     Destroy(child.gameObject);
                 }
             }
-
+            seatedCustomers = null;
+            cC = 0;
+            sC = 0;
+            seatedTimer = 0;
+            score = 1;
 
 
         }
 
 
-        sC = seatedCustomers.Count;
+       // sC = seatedCustomers.Count;
         //Debug.Log("seated");
         //Debug.Log(sC);
 

@@ -71,14 +71,12 @@ public class Group : MonoBehaviour
         Placement();
     }
 
-    /*private void OnTriggerEnter(Collider other)
+    private void Update()
     {
-        if (other.tag == "TableEmpty")
-        {
-            
-        }
+       
     }
-    */
+
+
     private void Placement()
     {
         if (customerList.Count >= 1)                                                        //Putting the customer in the right location
@@ -104,7 +102,7 @@ public class Group : MonoBehaviour
         if (customerList.Count >= 6)                                                        //Putting the customer in the right location
         {
             customerList[5].transform.position = groupNodes[5].transform.position;
-        }
+        }    
     }
 
     public void MoveGroup(Vector3 newPosition)                                  // The move function for other controllers to reference
