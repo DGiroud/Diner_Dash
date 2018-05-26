@@ -5,10 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - Floor
-  - TableFull
   - TableEmpty
   - Group
   - Customer
+  - TimerNode
+  - Timer
+  - Leaving
+  - Exit
+  - Pause Menu
+  - TableFull
   layers:
   - Default
   - TransparentFX
@@ -19,7 +24,7 @@ TagManager:
   - 
   - 
   - Tables
-  - 
+  - Pause Menu
   - 
   - 
   - 

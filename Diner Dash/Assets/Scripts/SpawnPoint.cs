@@ -42,6 +42,10 @@ public class SpawnPoint : MonoBehaviour
         {
             full = false;
         }
+        if (other.tag == "Leaving")
+        {
+            full = false;
+        }
     }
 
     void CountdownTimerF()
