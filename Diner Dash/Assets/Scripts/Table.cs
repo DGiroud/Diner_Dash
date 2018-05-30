@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Table : MonoBehaviour{
+public class Table : MonoBehaviour
+{
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public List<GameObject> tableNodes;             //Location of the seats
     public List<GameObject> seatedCustomers;        //Customers once they're seated
@@ -69,41 +70,43 @@ public class Table : MonoBehaviour{
             score = 0;                                                                                  //Resets data to zero
         }
     }
-    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void OnTriggerEnter(Collider group)
     {
-        if (group.tag == "Group")                                                                       //Checks that the collision is a Group
+        if (transform.tag == "TableEmpty")
         {
-            cC = group.gameObject.transform.childCount;                                                 //Data variable fo the amount of children in the group
-            sG = GameObject.Find("GameController").GetComponent<GameController>().selectedGroup;        //Reference to the game controllers selected group
-
-
-            if (group.GetComponent<Group>().targetTable != GetComponent<BoxCollider>())                 //Checks to see if its the corectly assigned group
-                return;                                                                                 //Reject group
-
-            if (tableNodes.Count < group.GetComponent<Group>().customerList.Count)                      //Checks to see if its the right sized table
-                return;                                                                                 //Reject group
-
-            if (tableNodes.Count >= group.GetComponent<Group>().customerList.Count)                     //Checks to see if its the right sized table
+            if (group.tag == "Group")                                                                       //Checks that the collision is a Group
             {
-                if (seated == false)                                                                    //Checks to see if the table already has a group on it
+                cC = group.gameObject.transform.childCount;                                                 //Data variable fo the amount of children in the group
+                sG = GameObject.Find("GameController").GetComponent<GameController>().selectedGroup;        //Reference to the game controllers selected group
+
+
+                if (group.GetComponent<Group>().targetTable != GetComponent<BoxCollider>())                 //Checks to see if its the corectly assigned group
+                    return;                                                                                 //Reject group
+
+                if (tableNodes.Count < group.GetComponent<Group>().customerList.Count)                      //Checks to see if its the right sized table
+                    return;                                                                                 //Reject group
+
+                if (tableNodes.Count >= group.GetComponent<Group>().customerList.Count)                     //Checks to see if its the right sized table
                 {
-                    for (int i = 0; i <= cC - 9; i++)                                                   //Gets the amount of customers
+                    if (seated == false)                                                                    //Checks to see if the table already has a group on it
                     {
-                        group.gameObject.transform.GetChild(8).SetParent(transform);                    //Transfers them over to the table as the new parent
+                        for (int i = 0; i <= cC - 9; i++)                                                   //Gets the amount of customers
+                        {
+                            group.gameObject.transform.GetChild(8).SetParent(transform);                    //Transfers them over to the table as the new parent
+                        }
+
+                        seated = true;                                                                      //Makes it so other groups cant be added to the table
+
+                        Seating();                                                                          //Runs the seating function
+
+                        if (sG == group.gameObject)                                                         //Checks if the selected object in the game controller is STILL the same group
+                        {
+                            sG = null;                                                                      //Changes the selected object in the game controller to an empty object
+                        }
+                        Destroy(group.gameObject);                                                          //Destroys the now empty group
+                        transform.tag = "TableFull";
                     }
-
-                    seated = true;                                                                      //Makes it so other groups cant be added to the table
-
-                    Seating();                                                                          //Runs the seating function
-
-                    if (sG == group.gameObject)                                                         //Checks if the selected object in the game controller is STILL the same group
-                    {
-                        sG = null;                                                                      //Changes the selected object in the game controller to an empty object
-                    }
-                    Destroy(group.gameObject);                                                          //Destroys the now empty group
                 }
             }
         }
@@ -136,8 +139,3 @@ public class Table : MonoBehaviour{
     }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
-
-
-
-
-

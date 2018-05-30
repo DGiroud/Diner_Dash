@@ -12,7 +12,7 @@ public class SpawnPoint : MonoBehaviour
 
     public float timer;
     public float countdownTimer;
-    public bool full =false;
+    public bool full = false;
 
     private void Awake()
     {
@@ -31,9 +31,9 @@ public class SpawnPoint : MonoBehaviour
                 countdownTimer = 0.0f;
                 CountdownTimerF();
             }
-        }  
+        }
 
-        
+
     }
 
     private void OnTriggerExit(Collider other)
@@ -50,6 +50,6 @@ public class SpawnPoint : MonoBehaviour
 
     void CountdownTimerF()
     {
-        timer = Random.Range(5,15);
+        timer = Random.Range(5, 15);
     }
 }

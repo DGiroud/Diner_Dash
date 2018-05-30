@@ -8,8 +8,8 @@ public class Exit : MonoBehaviour
     public int costMultiplier;
     public int score;
 
-    public GameObject cameraSelectedGroup;         //Shortcut to get the selected group from the gamecontroller
-    public GameController cameraReference;             //Shortcut to get the game controller script
+    private GameObject cameraSelectedGroup;         //Shortcut to get the selected group from the gamecontroller
+    private GameController cameraReference;         //Shortcut to get the game controller script
 
     private void Awake()
     {
@@ -47,5 +47,5 @@ public class Exit : MonoBehaviour
 
 }
 
-    
+
 

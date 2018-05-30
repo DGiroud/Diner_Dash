@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Group : MonoBehaviour{
+public class Group : MonoBehaviour
+{
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    public GameObject gameController;
 
     public List<GameObject> customers;                                  //Lis of all the different customers it can spawn
     public List<GameObject> customerList = new List<GameObject>();      //List Of customers attached to the group
@@ -30,12 +32,13 @@ public class Group : MonoBehaviour{
     public int groupSize2;                                              //Percentage chance of the group size being 2
     public int groupSize4;                                              //Percentage chance of the group size being 4
     public int groupSize6;                                              //Percentage chance of the group size being 6    
-    
-    NavMeshAgent agent;                                                 //The NavMesh Reference
 
+    NavMeshAgent agent;                                                 //The NavMesh Reference
+    private Transform gC;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void Awake()
     {
+        gC = FindObjectOfType<GameController>().transform;
         customerRange = (Random.Range(1, 101));     //Makes a random number for reference
 
         if (customerRange <= groupSize2)            //Checks what sized group its going to be
@@ -78,9 +81,10 @@ public class Group : MonoBehaviour{
             waiting = false;                                                                        //Set them to not waiting
         }
 
-        if (gameObject != GameObject.Find("GameController")
-            .GetComponent<GameController>().selectedGroup)                                          //Checks if the group is still currently selected by the game controller
-            marker.SetActive(false);                                                                //Turns marker off
+        if (gameObject != gC.GetComponent<GameController>().selectedGroup)              //Checks if the group is still currently selected by the game controller
+            foreach (Transform child in transform)
+                if (child.tag == "Customer")
+                    child.transform.GetChild(0).gameObject.SetActive(false);                                                              //Turns marker off
 
         if (waiting)                                                                                //Checks whether the table has a group on it
         {
@@ -118,7 +122,6 @@ public class Group : MonoBehaviour{
             timer.gameObject.SetActive(false);                                                      //Sets the whole timer off
         }
     }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     private void Placement()
     {
@@ -152,8 +155,5 @@ public class Group : MonoBehaviour{
     {
         agent.SetDestination(newPosition);                                      // Tells the NavMeshAgent its looking for a new Vector3
     }
-
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 }
-

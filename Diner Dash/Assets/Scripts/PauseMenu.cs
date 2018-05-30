@@ -6,19 +6,26 @@ using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour{
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
     public GameObject pauseMenuUI;          //Reference for the pause menu screen
     public GameObject onScreenUI;           //Reference for the onscreen UI that is on while the game is playing
-    public Text score;                      //Reference for the players score
+    public Text currentScore1;              //Reference for the players score
+    public Text currentScore2;              //Reference for the players score
+
+    public GameObject gameController;       //Reference to the game controller
 
     public bool gameIsPaused = false;       //Lets you know if the game is paused
-
-    //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    private float currentTime;
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+    private void start()
+    {
+        currentTime = gameController.GetComponent<GameController>().currentTimes;
+    }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     public void Resume()
     {
         pauseMenuUI.SetActive(false);       //Turns the pause menu off
         onScreenUI.SetActive(true);         //Turns the on screen UI on
-        Time.timeScale = 1f;                //Runs the game at normal speed  
+        Time.timeScale = currentTime;       //Runs the game at normal speed  
         gameIsPaused = false;               //Sets pause to off
     }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -50,7 +57,8 @@ public class PauseMenu : MonoBehaviour{
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
     void Update ()
     {
-        score.text = GameObject.Find("GameController").GetComponent<GameController>().scoreAmount.ToString();   //Updates the players score
+        currentScore1.text = gameController.GetComponent<GameController>().scoreAmount.ToString();   //Updates the players score
+        currentScore2.text = gameController.GetComponent<GameController>().scoreAmount.ToString();
 
         if (Input.GetKeyDown(KeyCode.Escape))       //Input for the pause menu
         {

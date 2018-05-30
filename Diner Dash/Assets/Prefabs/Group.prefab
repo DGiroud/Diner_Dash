@@ -196,11 +196,11 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4367170592645862}
-  - component: {fileID: 195229669172767512}
   - component: {fileID: 65631949452091150}
   - component: {fileID: 114723529330604518}
   - component: {fileID: 114843583445586452}
   - component: {fileID: 54978877689161578}
+  - component: {fileID: 195635106498970988}
   m_Layer: 0
   m_Name: Group
   m_TagString: Group
@@ -321,7 +321,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1692981098474856}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.4625673, y: 0, z: 2.9314284}
+  m_LocalPosition: {x: 12.760887, y: 0, z: 0.24590111}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4548756602661622}
@@ -1059,6 +1059,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6066e37e082e99645ae3faab730fdea6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameController: {fileID: 1549903652911138, guid: 493c42347b902c540bae16ccd05cc5ea,
+    type: 2}
   customers:
   - {fileID: 1330101383700840, guid: 8a0781ec31b4612409466351736935f0, type: 2}
   - {fileID: 1803646375075052, guid: 54fd6cf53deceea45820376fc7dca8eb, type: 2}
@@ -1164,7 +1166,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!195 &195229669172767512
+--- !u!195 &195635106498970988
 NavMeshAgent:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -1175,7 +1177,7 @@ NavMeshAgent:
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8
-  avoidancePriority: 99
+  avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1

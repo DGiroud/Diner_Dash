@@ -14,6 +14,8 @@ public class GameController : MonoBehaviour
     public Text score;
     public GameObject canvas;
 
+    public Animator crunchTime;
+
     public GameObject onScreenUI;
     public GameObject winScreenUI;
 
@@ -24,11 +26,30 @@ public class GameController : MonoBehaviour
 
     public GameObject marker;
 
-
-
+    public float currentTimes;
+    public Text currentSpeed;
+    private bool isCrunchTime = false;
+    
     void Update()
     {
+
+        if (canvas.GetComponent<PauseMenu>().gameIsPaused == false)
+            {
+            if (isCrunchTime == false)
+            {
+                Time.timeScale = 1.0f;
+            }
+            else if (isCrunchTime == true)
+            {
+                Time.timeScale = 1.5f;
+            }
+        }
+
+
         score.text = scoreAmount.ToString();
+        currentTimes = Time.timeScale;
+
+        //currentSpeed.text = currentTimes.ToString();
 
         if (selectedGroup == null)
             selectedGroup = emptyGroup;
@@ -49,7 +70,7 @@ public class GameController : MonoBehaviour
                 if (Input.GetMouseButtonDown(0))
                 {
                     if (canvas.transform.GetComponent<PauseMenu>().gameIsPaused == true)
-                        return;                    
+                        return;
 
                     if (hit.transform.tag == "TableFull")
                         return;
@@ -61,7 +82,7 @@ public class GameController : MonoBehaviour
                             selectedGroup.GetComponent<Group>().MoveGroup(hit.point);                   // Tells the group to follow the pointer
                             selectedGroup.GetComponent<Group>().targetTable = hit.transform.GetComponent<BoxCollider>();
                             selectedGroup = emptyGroup;
-                            hit.transform.tag = "TableFull";
+                            
                         }
 
                         if (hit.transform.tag == "Exit")                                                       // Has to have the tag floor                    
@@ -75,8 +96,12 @@ public class GameController : MonoBehaviour
                     if (hit.transform.tag == "Group")
                     {
                         selectedGroup = hit.transform.gameObject;
-                        selectedGroup.transform.GetChild(1).gameObject.SetActive(true);
+
+                        foreach (Transform child in selectedGroup.transform)
+                            if (child.tag == "Customer")
+                                child.transform.GetChild(0).gameObject.SetActive(true);
                     }
+
                     if (hit.transform.tag == "Floor")                                       // Has to have the tag floor 
                     {
                         if (selectedGroup != emptyGroup)
@@ -89,17 +114,32 @@ public class GameController : MonoBehaviour
         }
     }
 
-    private void WinScreen()
+    public void WinScreen()
     {
         winScreenUI.SetActive(true);
         onScreenUI.SetActive(false);
+        canvas.GetComponent<PauseMenu>().gameIsPaused = true;
         Time.timeScale = 0f;
     }
+
+    public void NormalSpeed()
+    {
+        crunchTime.SetBool("CrunchTime", false);
+        isCrunchTime = false;
+        Debug.Log("steady as she goes");
+    }
+
+    public void CrunchTime()
+    {
+        crunchTime.SetBool("CrunchTime", true);
+        isCrunchTime = true;
+        Debug.Log ("IT'S CRUNCH TIME!!");
+    }
 }
-            
-            
-        
-    
+
+
+
+
 
 
 
